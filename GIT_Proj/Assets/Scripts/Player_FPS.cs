@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player_FPS : MonoBehaviour
 {
-    public float MoveSpeed = 10;
+    private float MoveSpeed = 10;
     public float MouseSensitivity = 1;
     public Transform FPSCamera;
     private float RotateY = 0;
@@ -21,6 +21,10 @@ public class Player_FPS : MonoBehaviour
     public float JumpHeight = 1;
     private float gravity = -20;
 
+
+    //Stats
+    private float Stamina = 100;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +36,7 @@ public class Player_FPS : MonoBehaviour
     {
         if(GameManager.CurrentState == GameManager.GameState.GameInProgress)
         {
+            DashAndCrash();
             MouseLook();
             Movement();
             Shoot();
@@ -40,6 +45,8 @@ public class Player_FPS : MonoBehaviour
 
     private void MouseLook()
     {
+
+        //Lets the player move the camera with their mouse
         float rotateX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * MouseSensitivity;
 
         RotateY -= Input.GetAxis("Mouse Y") * MouseSensitivity;
@@ -51,7 +58,7 @@ public class Player_FPS : MonoBehaviour
     private void Movement()
     {
 
-
+        //If the player is touching a ground, they will be able to jump and/or move
         bool OnGround = thisController.isGrounded;
 
         if (OnGround && playerVelocity.y < 0)
@@ -72,10 +79,41 @@ public class Player_FPS : MonoBehaviour
 
     private void Shoot()
     {
+        //if player hits the left click button on the mouse, the character will shoot
         if(Input.GetMouseButton(0) && Time.time >= NextShoot)
         {
             NextShoot = Time.time + ShootInterval;
             Instantiate(Bullet, Gun.transform.position + Gun.transform.forward, FPSCamera.transform.rotation);
+        }
+    }
+
+    private void DashAndCrash()
+    {
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            //On left shift, if the player has stamina then they can dash but deplete their stamina
+            if (Stamina >= 30)
+            {
+                MoveSpeed = 20;
+                Stamina -= 2 * Time.deltaTime;
+            }
+
+            else if (Stamina < 30)
+            {
+                MoveSpeed = 5;
+            }
+        }
+
+        else
+        {
+            //Else players speed remsins normal and they will gain stamina up to their max stamina
+            MoveSpeed = 10;
+            Stamina += 1 * Time.deltaTime;
+
+            if(Stamina >= 100)
+            {
+                Stamina = 100;
+            }
         }
     }
 }
