@@ -5,22 +5,19 @@ using UnityEngine.UI;
 
 public class Player_FPS : MonoBehaviour
 {
-    private float MoveSpeed = 10;
+
     public float MouseSensitivity = 1;
     public Transform FPSCamera;
     private float RotateY = 0;
     private CharacterController thisController = null;
-
-    public Transform Gun;
-    public GameObject Bullet;
-    public float ShootInterval = 0.1f;
-    private float NextShoot = 0;
-
-    public Transform CrossHairObject;
-
+    
     private Vector3 playerVelocity;
     public float JumpHeight = 1;
     private float gravity = -20;
+
+    #region WallJump
+    private bool WallJed = false;
+    #endregion
 
     #region Slides
     private bool Sliding = false;
@@ -36,6 +33,7 @@ public class Player_FPS : MonoBehaviour
 
     #region Stats
     private float Stamina = 100;
+    private float MoveSpeed = 10;
 
     #endregion
 
@@ -52,10 +50,21 @@ public class Player_FPS : MonoBehaviour
         {
             SlidingForward();
             DashAndCrash();
-            AllUIBars();
+            //AllUIBars();
             MouseLook();
             Movement();
-            Shoot();
+            #region Debug
+            /*
+            if (thisController.isGrounded)
+            {
+                Debug.Log("grounded");
+            }
+            else
+            {
+                Debug.Log("not");
+            }
+            */
+            #endregion
         }
     }
 
@@ -81,29 +90,25 @@ public class Player_FPS : MonoBehaviour
             bool OnGround = thisController.isGrounded;
 
             if (OnGround && playerVelocity.y < 0)
+            {
                 playerVelocity.y = 0;
+                playerVelocity.x = 0;
+                playerVelocity.z = 0;
+                WallJed = false;
+            }
+
 
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
 
             Vector3 direction = (transform.forward * v + transform.right * h);
             thisController.Move(direction * Time.deltaTime * MoveSpeed);
-
+            //Jump
             if (Input.GetKeyDown(KeyCode.Space) && OnGround)
                 playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * gravity);
 
             playerVelocity.y += gravity * Time.deltaTime;
             thisController.Move(playerVelocity * Time.deltaTime);
-        }
-    }
-
-    private void Shoot()
-    {
-        //if player hits the left click button on the mouse, the character will shoot
-        if(Input.GetMouseButton(0) && Time.time >= NextShoot)
-        {
-            NextShoot = Time.time + ShootInterval;
-            Instantiate(Bullet, Gun.transform.position + Gun.transform.forward, FPSCamera.transform.rotation);
         }
     }
 
@@ -215,5 +220,21 @@ public class Player_FPS : MonoBehaviour
     {
         StaminaBar.maxValue = 100;
         StaminaBar.value = Stamina;
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (!thisController.isGrounded && hit.normal.y < 0.1f) 
+        {
+            if (Input.GetKeyDown(KeyCode.Space) && WallJed == false)
+            {
+                WallJed = true;
+                Debug.DrawRay(hit.point, hit.normal, Color.green, 1);
+                playerVelocity.y = 0;
+                playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * gravity);
+                playerVelocity.x += hit.normal.x;
+                playerVelocity.z += hit.normal.z;
+            }
+        }
     }
 }
