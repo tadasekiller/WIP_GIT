@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager thisManager;
     public Text Txt_Message;
+    public Slider StaminaBar;
 
     void Start()
     {
@@ -27,7 +28,11 @@ public class GameManager : MonoBehaviour
                 Txt_Message.gameObject.SetActive(false);
             }
         }
-
+        if (CurrentState == GameState.GameInProgress)
+        {
+            StaminaBar.maxValue = 100;
+            StaminaBar.value = Player_FPS.thisPlayer.Stamina;
+        }
 
         //restart the current scene
         if (Input.GetKeyDown(KeyCode.R))

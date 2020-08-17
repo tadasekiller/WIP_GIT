@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Player_FPS : MonoBehaviour
 {
-
+    public static Player_FPS thisPlayer;
     public float MouseSensitivity = 1;
     public Transform FPSCamera;
     private float RotateY = 0;
@@ -28,11 +28,11 @@ public class Player_FPS : MonoBehaviour
     #endregion
 
     #region ExternalStuff
-    public Slider StaminaBar;
+    //public Slider StaminaBar;
     #endregion
 
     #region Stats
-    private float Stamina = 100;
+    public float Stamina = 100;
     private float MoveSpeed = 10;
 
     #endregion
@@ -41,6 +41,7 @@ public class Player_FPS : MonoBehaviour
     void Start()
     {
         thisController = GetComponent<CharacterController>();
+        thisPlayer = this;
     }
 
     // Update is called once per frame
@@ -50,7 +51,7 @@ public class Player_FPS : MonoBehaviour
         {
             SlidingForward();
             DashAndCrash();
-            //AllUIBars();
+            //AllUIBars(); I moved the UI to the GameManager Script so we don't have to assign it for every scene
             MouseLook();
             Movement();
             #region Debug
@@ -91,9 +92,11 @@ public class Player_FPS : MonoBehaviour
 
             if (OnGround && playerVelocity.y < 0)
             {
+                //Reset Velocity and Gravity
                 playerVelocity.y = 0;
                 playerVelocity.x = 0;
                 playerVelocity.z = 0;
+                //Reset Walljump
                 WallJed = false;
             }
 
@@ -215,23 +218,31 @@ public class Player_FPS : MonoBehaviour
 
         
     }
-
+    /* UI Code
     private void AllUIBars()
     {
         StaminaBar.maxValue = 100;
         StaminaBar.value = Stamina;
     }
-
+    */
+    //Checks if colliding with Object
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        //Checks if already jumping & If object is a wall
         if (!thisController.isGrounded && hit.normal.y < 0.1f) 
         {
+            //Checks for Spacebar & If already walljumped before
             if (Input.GetKeyDown(KeyCode.Space) && WallJed == false)
             {
+                //Sets walljumped to true
                 WallJed = true;
+                //Debug for collision
                 Debug.DrawRay(hit.point, hit.normal, Color.green, 1);
+                //resets velocity so player doesn't walljump inconsistently (maybe optional/bad?)
                 playerVelocity.y = 0;
+                //Jump
                 playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * gravity);
+                //Increase force in opposite direction
                 playerVelocity.x += hit.normal.x;
                 playerVelocity.z += hit.normal.z;
             }
