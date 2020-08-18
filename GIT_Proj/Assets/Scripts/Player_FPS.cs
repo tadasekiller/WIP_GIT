@@ -98,6 +98,8 @@ public class Player_FPS : MonoBehaviour
                 playerVelocity.z = 0;
                 //Reset Walljump
                 WallJed = false;
+                //Reset Slope(Climb)
+                thisController.slopeLimit = 45;
             }
 
 
@@ -108,7 +110,10 @@ public class Player_FPS : MonoBehaviour
             thisController.Move(direction * Time.deltaTime * MoveSpeed);
             //Jump
             if (Input.GetKeyDown(KeyCode.Space) && OnGround)
+            {
                 playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * gravity);
+                thisController.slopeLimit = 90;
+            }
 
             playerVelocity.y += gravity * Time.deltaTime;
             thisController.Move(playerVelocity * Time.deltaTime);
@@ -225,6 +230,7 @@ public class Player_FPS : MonoBehaviour
         StaminaBar.value = Stamina;
     }
     */
+    //Walljump Method
     //Checks if colliding with Object
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
@@ -243,8 +249,8 @@ public class Player_FPS : MonoBehaviour
                 //Jump
                 playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * gravity);
                 //Increase force in opposite direction
-                playerVelocity.x += hit.normal.x;
-                playerVelocity.z += hit.normal.z;
+                playerVelocity.x += hit.normal.x*(MoveSpeed*0.5f);
+                playerVelocity.z += hit.normal.z*(MoveSpeed*0.5f);
             }
         }
     }
