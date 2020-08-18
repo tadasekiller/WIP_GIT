@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -271,6 +271,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4229992471502598730, guid: 78ad0a0b2c4017443b50dfb02ac6b70c,
+        type: 3}
+      propertyPath: CameraCameraCamera
+      value: 
+      objectReference: {fileID: 1653874357}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78ad0a0b2c4017443b50dfb02ac6b70c, type: 3}
 --- !u!1001 &648584223
@@ -280,6 +285,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3073183959302778028, guid: 4eb867c5e58509641b2601afeeea1679,
+        type: 3}
+      propertyPath: m_Name
+      value: GameManager
+      objectReference: {fileID: 0}
     - target: {fileID: 9062376507579392504, guid: 4eb867c5e58509641b2601afeeea1679,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -289,11 +299,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3073183959302778028, guid: 4eb867c5e58509641b2601afeeea1679,
-        type: 3}
-      propertyPath: m_Name
-      value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 3061887052105863456, guid: 4eb867c5e58509641b2601afeeea1679,
         type: 3}
@@ -558,3 +563,9 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1653874357 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4229992471504561774, guid: 78ad0a0b2c4017443b50dfb02ac6b70c,
+    type: 3}
+  m_PrefabInstance: {fileID: 526154146}
+  m_PrefabAsset: {fileID: 0}
