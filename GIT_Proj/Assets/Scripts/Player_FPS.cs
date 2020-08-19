@@ -67,6 +67,16 @@ public class Player_FPS : MonoBehaviour
             }
             */
             #endregion
+
+            if(Sliding == false)
+            {
+                thisController.height = 2;
+            }
+
+            else if(Sliding == true)
+            {
+                thisController.height = 0;
+            }
         }
     }
 
@@ -210,7 +220,7 @@ public class Player_FPS : MonoBehaviour
         }
 
         //Slide Duration, a.k.a how long the character will slide for
-        if (SlidingTime >= 5)
+        if (SlidingTime >= 2)
         {
             SlidingTime = 0;
             Sliding = false;
