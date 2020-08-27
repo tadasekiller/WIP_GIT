@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class Player_FPS : MonoBehaviour
 {
+    public static int Lives = 3;
     public static Player_FPS thisPlayer;
     public float MouseSensitivity = 1;
     public Transform FPSCamera;
@@ -30,6 +31,7 @@ public class Player_FPS : MonoBehaviour
 
     #region ExternalStuff
     //public Slider StaminaBar;
+    public Text PlayerLives;
     #endregion
 
     #region Stats
@@ -78,6 +80,8 @@ public class Player_FPS : MonoBehaviour
             {
                 thisController.height = 0;
             }
+
+            PlayerLives.text = "Lives: " + Lives;
         }
     }
 
@@ -279,6 +283,11 @@ public class Player_FPS : MonoBehaviour
         }
         else if (hit.transform.tag == "Death")
         {
+            Lives -= 1;
+            if(Lives <= 0)
+            {
+                SceneManager.LoadScene(4);
+            }
             transform.position = spawnpoint.position;
             transform.rotation = spawnpoint.rotation;
             GameManager.thisManager.TimerStart = Time.time;
