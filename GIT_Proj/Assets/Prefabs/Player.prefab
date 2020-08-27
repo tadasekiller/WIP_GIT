@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4229992471502598730}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4229992470515725744}
+  - {fileID: 34526490780478970}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MouseSensitivity: 10
-  FPSCamera: {fileID: 4229992471504561773}
+  FPSCamera: {fileID: 0}
   CameraCameraCamera: {fileID: 0}
   JumpHeight: 1.3
   Stamina: 100
@@ -137,15 +137,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4c43e4be04177745afd992575894dc8, type: 3}
---- !u!4 &4229992470515725744 stripped
+--- !u!4 &34526490780478970 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 4092522165178078362, guid: d4c43e4be04177745afd992575894dc8,
-    type: 3}
-  m_PrefabInstance: {fileID: 178029093494759722}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &4229992471504561773 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4092522164189366087, guid: d4c43e4be04177745afd992575894dc8,
+  m_CorrespondingSourceObject: {fileID: 144912529414360272, guid: d4c43e4be04177745afd992575894dc8,
     type: 3}
   m_PrefabInstance: {fileID: 178029093494759722}
   m_PrefabAsset: {fileID: 0}

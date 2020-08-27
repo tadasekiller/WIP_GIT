@@ -11,13 +11,13 @@ public class Player_FPS : MonoBehaviour
     public GameObject CameraCameraCamera;
     private float RotateY = 0;
     private CharacterController thisController = null;
-    
+    private Transform spawnpoint;
     private Vector3 playerVelocity;
     public float JumpHeight = 1;
     private float gravity = -20;
 
     #region WallJump
-    private bool WallJed = false;
+    public bool WallJed = false;
     #endregion
 
     #region Slides
@@ -43,6 +43,7 @@ public class Player_FPS : MonoBehaviour
     {
         thisController = GetComponent<CharacterController>();
         thisPlayer = this;
+        spawnpoint = GameObject.FindGameObjectWithTag("Spawn").transform;
     }
 
     // Update is called once per frame
@@ -272,9 +273,16 @@ public class Player_FPS : MonoBehaviour
                 //Jump
                 playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * gravity);
                 //Increase force in opposite direction
-                playerVelocity.x += hit.normal.x*(MoveSpeed*0.5f);
-                playerVelocity.z += hit.normal.z*(MoveSpeed*0.5f);
+                //playerVelocity.x += hit.normal.x*(MoveSpeed*0.5f);
+                //playerVelocity.z += hit.normal.z*(MoveSpeed*0.5f);
             }
+        }
+        else if (hit.transform.tag == "Death")
+        {
+            transform.position = spawnpoint.position;
+            transform.rotation = spawnpoint.rotation;
+            GameManager.thisManager.TimerStart = Time.time;
+            Stamina = 100;
         }
     }
 }
