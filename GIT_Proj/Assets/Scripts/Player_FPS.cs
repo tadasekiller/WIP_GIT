@@ -2,22 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class Player_FPS : MonoBehaviour
 {
+    public static int Lives = 3;
     public static Player_FPS thisPlayer;
     public float MouseSensitivity = 1;
     public Transform FPSCamera;
     public GameObject CameraCameraCamera;
     private float RotateY = 0;
     private CharacterController thisController = null;
-    
+    private Transform spawnpoint;
     private Vector3 playerVelocity;
     public float JumpHeight = 1;
     private float gravity = -20;
 
     #region WallJump
-    private bool WallJed = false;
+    public bool WallJed = false;
     #endregion
 
     #region Slides
@@ -30,6 +31,7 @@ public class Player_FPS : MonoBehaviour
 
     #region ExternalStuff
     //public Slider StaminaBar;
+    public Text PlayerLives;
     #endregion
 
     #region Stats
@@ -43,6 +45,7 @@ public class Player_FPS : MonoBehaviour
     {
         thisController = GetComponent<CharacterController>();
         thisPlayer = this;
+        spawnpoint = GameObject.FindGameObjectWithTag("Spawn").transform;
     }
 
     // Update is called once per frame
@@ -67,6 +70,18 @@ public class Player_FPS : MonoBehaviour
             }
             */
             #endregion
+
+            if(Sliding == false)
+            {
+                thisController.height = 2;
+            }
+
+            else if(Sliding == true)
+            {
+                thisController.height = 0;
+            }
+
+            PlayerLives.text = "Lives: " + Lives;
         }
     }
 
@@ -210,7 +225,7 @@ public class Player_FPS : MonoBehaviour
         }
 
         //Slide Duration, a.k.a how long the character will slide for
-        if (SlidingTime >= 5)
+        if (SlidingTime >= 2)
         {
             SlidingTime = 0;
             Sliding = false;
@@ -262,9 +277,21 @@ public class Player_FPS : MonoBehaviour
                 //Jump
                 playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * gravity);
                 //Increase force in opposite direction
-                playerVelocity.x += hit.normal.x*(MoveSpeed*0.5f);
-                playerVelocity.z += hit.normal.z*(MoveSpeed*0.5f);
+                //playerVelocity.x += hit.normal.x*(MoveSpeed*0.5f);
+                //playerVelocity.z += hit.normal.z*(MoveSpeed*0.5f);
             }
+        }
+        else if (hit.transform.tag == "Death")
+        {
+            Lives -= 1;
+            if(Lives <= 0)
+            {
+                SceneManager.LoadScene(4);
+            }
+            transform.position = spawnpoint.position;
+            transform.rotation = spawnpoint.rotation;
+            GameManager.thisManager.TimerStart = Time.time;
+            Stamina = 100;
         }
     }
 }
